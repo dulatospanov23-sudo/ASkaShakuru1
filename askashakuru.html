@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Асқа Шақыру </title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #d4af37;
+            --dark: #2c3e50;
+            --light: #f9f9f9;
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            color: var(--dark);
+        }
+        .card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            border: 1px solid #eee;
+        }
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--gold);
+        }
+        p { line-height: 1.6; font-weight: 300; }
+        .input-group { margin: 30px 0; }
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            font-size: 16px;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus { border-color: var(--gold); }
+        .buttons { display: flex; gap: 10px; justify-content: center; margin-top: 20px; }
+        button {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, opacity 0.3s;
+            width: 100%;
+        }
+        .btn-yes { background-color: var(--gold); color: white; }
+        .btn-no { background-color: #eee; color: #777; }
+        button:active { transform: scale(0.95); }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+        #success-msg { display: none; color: #27ae60; font-weight: 600; margin-top: 20px; }
+        .loading { display: none; font-size: 14px; color: #888; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="card" id="main-card">
+    <h1>Асқа шақыру</h1>
+    <p>Құрметті  
+ағайын- туыс, бауырлар, Абекеңнің ағалары мен  достары!
+
+Сіздерді аяулы жар, ардақты әке, қимас бауырларым, адал дос болған 
+УРАЗКЕЛДИЕВ АБДУСАИД БАХИЯРҰЛЫНЫҢ 
+100 күндік асына, ауызашарға шақырамыз!
+
+Уақыты:  18.03.2026ж
+Сағ 18:35
+
+Мекен-жайы:
+Астрахан ауданы 
+"Sara Life" тойханасы
+Әл-Фараби көшесі,
+
+Ас беруші:
+Жұбайы, ұл-қыздары</p>
+    
+    <div class="input-group">
+        <input type="text" id="guest-name" placeholder="Атыңызды енгізіңіз..." required>
+    </div>
+
+    <p><b>Қатысасыз ба?</b></p>
+    <div class="buttons">
+        <button class="btn-yes" onclick="sendResponse('Иә')">Иә ,келемін </button>
+        <button class="btn-no" onclick="sendResponse('Жоқ')">Жоқ,келе алмаймын </button>
+    </div>
+
+    <div id="loading" class="loading">Жауап жіберілді </div>
+    <div id="success-msg">Рақмет ✨</div>
+</div>
+
+<script>
+    // ВСТАВЬТЕ СВОЮ ССЫЛКУ НИЖЕ
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyzYhbVSRPxa5n0pjhgBabqpuOYzXF-ihmR1qYEYRk9xJaDuuplnWcryB5YrKLY2Aw/exec';
+
+    function sendResponse(answer) {
+        const name = document.getElementById('guest-name').value;
+        const loading = document.getElementById('loading');
+        const success = document.getElementById('success-msg');
+        const buttons = document.querySelectorAll('button');
+
+        if (!name) {
+            alert("Атыңызды енгізіңіз...");
+            return;
+        }
+
+        // Блокируем кнопки и показываем загрузку
+        buttons.forEach(b => b.disabled = true);
+        loading.style.display = 'block';
+
+        fetch(scriptURL, {
+            method: 'POST',
+            mode: 'no-cors', // Важно для Google Apps Script
+            cache: 'no-cache',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: name, answer: answer })
+        })
+        .then(() => {
+            loading.style.display = 'none';
+            success.style.display = 'block';
+            document.querySelector('.buttons').style.display = 'none';
+            document.querySelector('.input-group').style.display = 'none';
+        })
+        .catch(error => {
+            console.error('Қате ', error.message);
+            alert('Произошла ошибка при отправке. Попробуйте еще раз.');
+            buttons.forEach(b => b.disabled = false);
+            loading.style.display = 'none';
+        });
+    }
+</script>
+
+</body>
+</html>
