@@ -127,10 +127,18 @@
 
         fetch(scriptURL, {
             method: 'POST',
-            mode: 'no-cors', // Важно для Google Apps Script
+            mode: 'no-cors', 
             cache: 'no-cache',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name: name, answer: answer })
+        })
+        .then(() => {
+            // Для мобильных браузеров при no-cors ответ всегда будет "пустым", 
+            // поэтому мы просто считаем, что всё ок.
+            loading.style.display = 'none';
+            success.style.display = 'block';
+            document.querySelector('.buttons').style.display = 'none';
+            document.querySelector('.input-group').style.display = 'none';
         })
         .then(() => {
             loading.style.display = 'none';
@@ -149,4 +157,5 @@
 
 </body>
 </html>
+
 
